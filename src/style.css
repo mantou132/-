@@ -1,0 +1,5 @@
+body {
+  background: #fff;
+  -webkit-animation: name 1 liner 0s 1;
+          animation: name 1 liner 0s 1;
+}
