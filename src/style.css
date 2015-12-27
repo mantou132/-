@@ -1,5 +1,305 @@
-body {
+section {
+  right: 100%;
+}
+.old_page {
+  right: 100%;
+  -webkit-animation: out 0.5s ease-out 0s 1 normal none;
+          animation: out 0.5s ease-out 0s 1 normal none;
+}
+.active_page {
+  right: 0;
+  -webkit-animation: in 0.5s ease-in 0s 1 normal none;
+          animation: in 0.5s ease-in 0s 1 normal none;
+}
+@-webkit-keyframes in {
+  0% {
+    top: 100%;
+  }
+  100% {
+    top: 0;
+  }
+}
+@keyframes in {
+  0% {
+    top: 100%;
+  }
+  100% {
+    top: 0;
+  }
+}
+@-webkit-keyframes out {
+  0% {
+    top: 0;
+    right: 0%;
+  }
+  100% {
+    top: -100%;
+    right: 0%;
+  }
+}
+@keyframes out {
+  0% {
+    top: 0;
+    right: 0%;
+  }
+  100% {
+    top: -100%;
+    right: 0%;
+  }
+}
+:root {
+  font-size: 62.5%;
+}
+@media (min-width: 480px) and (max-aspect-ratio: 16/9) {
+  :root {
+    font-size: 100%;
+  }
+}
+@media (min-width: 640px) and (max-aspect-ratio: 16/9) {
+  :root {
+    font-size: 120%;
+  }
+}
+html {
+  background: #ffc5c5;
+  color: #ffffff;
+  font-family: "qingSong", serif;
+  overflow: hidden;
+}
+body,
+html {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.bg {
+  position: absolute;
+}
+.bg svg {
+  position: inherit;
+  z-index: -1;
+}
+a,
+button {
+  cursor: pointer;
+}
+a::-moz-focus-inner,
+button::-moz-focus-inner {
+  border: none;
+}
+button {
+  font-family: "qingSong", serif;
+  font-size: 2em;
+  color: inherit;
+  background: #ff6666;
+  border: none;
+  border-radius: .2em;
+  box-sizing: content-box;
+  padding: .5em;
+  width: 7em;
+  -webkit-tap-highlight-color: transparent;
+}
+button:active {
+  -webkit-filter: brightness(70%);
+          filter: brightness(70%);
+  outline: none;
+}
+#page_1,
+#page_2,
+#page_3 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+#page_1 .content,
+#page_2 .content,
+#page_3 .content {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1.5em;
+  margin-top: -5em;
+  max-height: 80%;
+}
+#page_1 .content h1,
+#page_2 .content h1,
+#page_3 .content h1 {
+  font-size: 1.6em;
+  text-align: center;
+}
+#page_1 .content p,
+#page_2 .content p,
+#page_3 .content p {
+  font-size: 1.2em;
+  text-align: justify;
+}
+#page_1::before,
+#page_2::before,
+#page_3::before {
+  content: "";
+  height: 100%;
+  vertical-align: middle;
+  display: inline-block;
+}
+#page_1 .btns,
+#page_2 .btns,
+#page_3 .btns {
+  position: absolute;
+  width: 100%;
+  bottom: 5em;
+}
+#page_1 .btns .button,
+#page_2 .btns .button,
+#page_3 .btns .button,
+#page_1 .btns button,
+#page_2 .btns button,
+#page_3 .btns button {
+  display: block;
+  margin: auto;
+}
+#page_1 .btns .button + .button,
+#page_2 .btns .button + .button,
+#page_3 .btns .button + .button,
+#page_1 .btns button + button,
+#page_2 .btns button + button,
+#page_3 .btns button + button {
+  margin-top: 1em;
+}
+@media (min-aspect-ratio: 4/3) {
+  #page_1 .btns,
+  #page_2 .btns,
+  #page_3 .btns {
+    bottom: 10%;
+  }
+}
+#page_1 .content {
+  width: 23em;
+  height: 23em;
+  text-shadow: 0px 0px 3px #ffc5c5;
+}
+#page_1 .button svg.icon-to_page2 {
+  height: 3em;
+}
+#page_1 .bgi {
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+#page_2 .content {
+  position: relative;
   background: #fff;
-  -webkit-animation: name 1 liner 0s 1;
-          animation: name 1 liner 0s 1;
+  text-align: left;
+  width: 90%;
+  max-width: 45em;
+  height: 20em;
+  padding: 1.5em 2em;
+  box-sizing: border-box;
+}
+#page_2 .content .zip_1,
+#page_2 .content .zip_2 {
+  display: inline-block;
+}
+#page_2 .content .zip_1 i,
+#page_2 .content .zip_2 i {
+  display: inline-block;
+  border: 1px solid #E51373;
+  margin-right: .15em;
+  width: 1.4em;
+  height: 1.4em;
+}
+#page_2 .content .zip_2 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: inherit;
+}
+#page_2 .content .stamp {
+  width: 3.3em;
+  height: 4em;
+  border: 1px dashed #E51373;
+  text-align: center;
+  float: right;
+}
+#page_2 .content .stamp .icon-stamp {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  fill: #BDB9B8;
+}
+#page_2 .content .stamp::before {
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+  content: "";
+}
+#page_2 .content .stamp::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+#page_2 .content .textarea {
+  width: 100%;
+  height: 9rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+#page_2 .content .textarea::-webkit-scrollbar {
+  display: none;
+}
+#page_2 .content .textarea textarea {
+  display: block;
+  margin: 0;
+  overflow-y: hidden;
+  line-height: 3rem;
+  font-size: 1.5rem;
+  font-family: sans-serif;
+  color: #848484;
+  width: inherit;
+  border: none;
+  resize: none;
+  background-color: transparent;
+  background-image: -webkit-repeating-linear-gradient(top, transparent 0%, transparent calc(3rem - 0.1rem), rgba(0, 0, 0, 0.1) calc(3rem - 0.1rem), rgba(0, 0, 0, 0.1) 3rem);
+  background-image: repeating-linear-gradient(180deg, transparent 0%, transparent calc(3rem - 0.1rem), rgba(0, 0, 0, 0.1) calc(3rem - 0.1rem), rgba(0, 0, 0, 0.1) 3rem);
+}
+#page_2 .content .textarea textarea:focus {
+  border: none;
+  outline: none;
+}
+#page_2 .content .qrs {
+  height: 3em;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: inherit;
+}
+#page_2 .content .qrs img {
+  height: 100%;
+  width: auto;
+  margin-right: .2em;
+}
+.qr_view {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.9);
+}
+.qr_view img {
+  position: absolute;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+}
+#page_3 .content {
+  margin-top: -10em;
+  width: 23em;
+  height: 10em;
+}
+@font-face {
+  font-family: "qingSong";
+  src: url("font/FZQKBYSJW -GB1-0.ttf");
 }

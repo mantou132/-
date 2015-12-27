@@ -1,0 +1,101 @@
+/*
+看视频不知道长度？？？
+*/
+
+var http = require('http');
+var https = require('https');
+var url = require('url');
+var fs = require('fs');
+var gzip = require('zlib').gzip;
+// var brotli = require('./iltorb').compress;
+// var lzma = require('./lzma-native').compress;
+var type = require('./mime');
+
+var TLSoptions = {
+    key: fs.readFileSync('./TLS/key.pem'),
+    cert: fs.readFileSync('./TLS/cer.cer')
+};
+
+var error = "./error404.html";
+
+//函数Response，将HTML、css、js等文件响应给客户端
+var Response = function(req,res,filePath,mime,encodings){
+    var encodings = (req.headers['accept-encoding'] || '').split(/\s*,\s*/);
+    var mime = mime ||"";
+    console.log(mime); 
+    //读取文件，读取完成后给客户端响应
+    fs.readFile(filePath,function(err,data){//函数写在外面能省略新建函数的开销
+        if(err){                         //如果失败，就返回错误文件,如何直接检测文件是否存在？存在就读流
+            if(filePath != error)       //如果失败的不是错误文件，才返回错误文件
+                Response(req,res,error);
+        }else{
+            var noCache = req.headers['cache-control'] == 'no-chche',
+            reqModified = new Date(req.headers['if-modified-since']).toUTCString();
+            reqModified == fs.statSync(filePath).mtime.toUTCString() && !noCache && (res.writeHead(304),res.end());
+            var header = {
+                'Content-type': mime,
+                'Last-Modified': fs.statSync(filePath).mtime.toUTCString(),
+                'Cache-Control': "max-age=10",
+                'Access-Control-Allow-Origin': 'https://developer.mozilla.org',
+                'X-Frame-Options': 'DENY',//非标准
+                'Strict-Transport-Security': "max-age=86400"//纯IP下STS无法处理
+            };
+
+            if (mime.indexOf("text") !== -1) {
+                // if (encodings.indexOf("br") !== -1) {
+                //     header['Content-Encoding'] = 'br';
+                //     res.writeHead(200,header);
+                //     brotli(data,function(err,data){res.end(data)});
+                // }if (encodings.indexOf("lzma") !== -1) {
+                //     header['Content-Encoding'] = 'lzma';
+                //     res.writeHead(200,header);
+                //     lzma(data,function(err,data){res.end(data)});
+                // }
+                if (encodings.indexOf("gzip") !== -1) {
+                    header['Content-Encoding'] = 'gzip';
+                    res.writeHead(200,header);
+                    gzip(data,function(err,data){res.end(data)});
+                }else{
+                    res.writeHead(200,header);
+                    res.end(data);
+                }
+            }else{
+                res.writeHead(200,header);
+                res.end(data);
+            }
+        }
+    });
+}
+
+
+function server(request, response) {
+    var rurl = decodeURIComponent(url.parse(request.url,true,true).pathname);
+    var mime = type.types[rurl.slice(++i)]
+    var i = rurl.lastIndexOf(".");
+    console.log(rurl); 
+    //判断URL，提供不同的路由
+    if(rurl == '/index' 
+                    || rurl == '/index.html' 
+                    || rurl == '/') {    //主页
+        Response(request,response,"./index.html","text/html");
+    } else {
+        var filePath = './' + rurl;
+        Response(request, response, filePath, mime);
+    }
+
+    //POST 请求要这样来读请求体
+    // var body = [];
+    // request.on('data', function (chunk) {
+    //     body.push(chunk);
+    // });
+    // request.on('end', function () {
+    //     body = Buffer.concat(body);
+    //     console.log(body.toString());
+    // });
+
+}
+
+//http进行跳转
+https.createServer(TLSoptions,server).listen(443);
+http.createServer(server).listen(80);
+console.log("server open");

@@ -1,6 +1,265 @@
-@a: #fff;
-// test
+@import (less) "animation.less";
+@bgc: #ffc5c5; // 背景色
+@fgc: #ffa4a4; // 前景色
+@btc: #ff6666; // 按钮背景色
+@fc : #ffffff; // 文字颜色
+@tc : #848484; // 信封内容文字颜色
+@mc : #E51373; // 信封内彩色
+@mg : #BDB9B8; // 信封内灰色
+@mbr: #C00000; // 信封边框红色
+@mbb: #0070BE; // 信封边框蓝色
+
+:root{
+	font-size: 62.5%;
+	@media (min-width: 480px) and (max-aspect-ratio: 16/9) {
+		font-size: 100%;
+	}
+	@media (min-width: 640px) and (max-aspect-ratio: 16/9) {
+		font-size: 120%;
+	}
+}
+html{
+	&:extend(body);
+	background: @bgc;
+	color: @fc;
+	font-family: "qingSong", serif;
+	overflow: hidden;
+}
 body{
-	background: @a;
-	animation: name 1 liner 0s 1;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+.bg {
+	position: absolute;
+	svg {
+		position: inherit;
+		z-index: -1;
+	}
+}
+a,
+button{
+	&::-moz-focus-inner{
+		border : none;
+	}
+	cursor: pointer;
+}
+button{
+	font-family: "qingSong", serif;
+	font-size: 2em;
+	color: inherit;
+	background: @btc;
+	border: none;
+	border-radius: .2em;
+	box-sizing: content-box;
+	padding: .5em;
+	width: 7em;
+	-webkit-tap-highlight-color: transparent;
+	&:active{
+		filter: brightness(70%);
+		outline : none;
+	}
+}
+#page_1,
+#page_2,
+#page_3{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	.content{
+		display: inline-block;
+		vertical-align: middle;
+		line-height: 1.5em;
+		margin-top: -5em;
+		max-height: 80%; 
+		h1{
+			font-size: 1.6em;
+			text-align: center;
+		}
+		p{
+			font-size: 1.2em;
+			text-align: justify;
+		}
+	}
+	&::before{
+		content: "";
+		height: 100%;
+		vertical-align: middle;
+		display: inline-block;
+	}
+
+	.btns{
+		position: absolute;
+		width: 100%;
+		bottom: 5em;
+		.button,
+		button{
+			display: block;
+			margin: auto;
+		}
+		.button + .button,
+		button + button{
+			margin-top: 1em;
+		}
+		@media (min-aspect-ratio: 4/3) {
+			bottom: 10%;
+		}
+	}
+}
+#page_1{
+	.content{
+		width: 23em;
+		height: 23em;
+		text-shadow: 0px 0px 3px @bgc;
+	}
+	.button{
+		svg.icon-to_page2 {
+			height: 3em;
+		}
+	}
+	.bgi{
+		position: absolute;
+		z-index: -1;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+	}
+}
+#page_2{
+	.content{
+		position: relative;
+		background: #fff;
+		text-align: left;
+		width: 90%;
+		max-width: 45em;
+		height: 20em;
+		padding: 1.5em 2em;
+		box-sizing: border-box;
+
+		// border-image-source: repeating-linear-gradient(-135deg,
+		// 	@mbr 0,
+		// 	@mbr 2.5%,
+		// 	#fff 2.5%,
+		// 	#fff 5%,
+		// 	@mbb 5%,
+		// 	@mbb 7.5%,
+		// 	#fff 7.5%,
+		// 	#fff 10%,
+		// );
+		// border-image-width: 0.5em;
+		// border-image-slice: 5;
+
+		.zip_1,
+		.zip_2{
+			display: inline-block;
+			i{
+				display: inline-block;
+				border: 1px solid @mc;
+				margin-right: .15em;
+				width: 1.4em;
+				height: 1.4em;
+			}
+		}
+		.zip_2{
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			padding:inherit;
+		}
+		.stamp{
+			width: 3.3em;
+			height: 4em;
+			border: 1px dashed @mc;
+			text-align: center;
+			float: right;
+			.icon-stamp{
+				width: 1em;
+				height: 1em;
+				display: inline-block;
+				vertical-align: middle;
+				fill: @mg;
+			}
+			&::before{
+				display: inline-block;
+				vertical-align: middle;
+				height: 100%;
+				content: "";
+			}
+			&::after {
+				display: block;
+				content: "";
+				clear: both;
+			}
+		}
+		.textarea{
+			@page_2_textarea_h: 9rem;
+			width: 100%;
+			height: @page_2_textarea_h;
+			overflow-x: hidden;
+			overflow-y: scroll;
+			&::-webkit-scrollbar {
+			    display: none;
+			}
+			textarea{
+				display: block;
+				margin: 0;
+				overflow-y: hidden;
+				line-height: @page_2_textarea_h/3rem;
+				font-size: @page_2_textarea_h/6rem;
+				font-family: sans-serif;
+				color: @tc;
+				width: inherit;
+				border: none;
+				resize: none;
+				background-color: transparent;
+				background-image:repeating-linear-gradient(180deg, 
+					transparent 0%,
+					transparent calc(@page_2_textarea_h/3rem ~"-" 0.1rem),
+					rgba(0, 0, 0, .1) calc(@page_2_textarea_h/3rem ~"-" 0.1rem),
+					rgba(0, 0, 0, .1) @page_2_textarea_h/3rem
+				);
+				&:focus{
+					border: none;
+					outline: none;
+				}
+			}
+		}
+		.qrs{
+			height: 3em;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			padding:inherit;
+			img{
+				height: 100%;
+				width: auto;
+				margin-right: .2em;
+			}
+		}
+	} // content
+}
+.qr_view{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: rgba(0, 0, 0, 0.9);
+	img{
+		position: absolute;
+		transition:  all .5s;
+	}
+}
+#page_3{
+	.content{
+		margin-top: -10em;
+		width: 23em;
+		height: 10em;
+	}
+}
+@font-face{
+	font-family: "qingSong";
+	src: url("font/FZQKBYSJW -GB1-0.ttf");
 }

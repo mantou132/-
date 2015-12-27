@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang=zh-cn>
+<html lang="zh-cn">
 
 <head>
-    <meta charset=UTF-8>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0, width=device-width">
+	<meta name="screen-orientation" content="portrait">
     <title>传递爱的祝福</title>
-    <link rel=stylesheet href=style.css>
-    <script src=index.js></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body ontouchstart="">
     <svg style="position: absolute; width: 0; height: 0;" width=0 height=0 version=1.1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink>
         <defs>
             <symbol id=icon-aircraft viewbox="0 0 1134 1024">
@@ -27,8 +28,87 @@
                 <path fill=#ffc5c5 class="path1 fill-color3" d="M389.44 371.288l-354.681-336.529zM744.121 34.759l-354.681 336.529zM389.44 680.272l-354.681-336.544zM744.121 343.728l-354.681 336.544zM34.759 652.697l354.681 336.544zM744.121 652.697l-354.681 336.544z"></path>
                 <path fill=#f66 class="path2 fill-color1" d="M389.44 1024c0 0 0 0 0 0-8.945 0-17.658-3.507-24.084-9.686l-354.526-336.421c-32.519-30.866 15.325-81.274 47.859-50.424l330.751 313.835 330.751-313.835c32.504-30.866 80.363 19.573 47.859 50.424l-354.526 336.421c-6.442 6.179-15.155 9.686-24.084 9.686zM389.44 715.031c0 0 0 0 0 0-5.222 0-10.397-1.174-15.093-3.445-0.015 0-0.015 0.015-0.031-0.015-3.229-1.56-6.257-3.63-8.976-6.241l-354.511-336.39c-32.519-30.866 15.325-81.274 47.859-50.439l330.751 313.835 330.751-313.835c32.519-30.851 80.363 19.573 47.859 50.439l-354.526 336.405c-6.427 6.164-15.17 9.686-24.084 9.686zM389.44 406.047c0 0 0 0 0 0-8.945 0-17.658-3.491-24.1-9.686l-354.511-336.39c-32.519-30.866 15.325-81.274 47.859-50.439l330.751 313.835 330.751-313.835c32.519-30.851 80.363 19.573 47.859 50.439l-354.526 336.39c-6.427 6.195-15.155 9.686-24.084 9.686z"></path>
             </symbol>
+            <symbol id=icon-orbit viewbox="0 0 621.011 988.724">
+                <title>orbit</title>
+					<path style="fill:none;stroke:#FFA4A4;stroke-width:2;stroke-miterlimit:10;" d="M154.996,988.549c0,0-0.121-0.681-0.313-1.971"></path>
+					<path style="fill:none;stroke:#FFA4A4;stroke-width:2;stroke-miterlimit:10;stroke-dasharray:4.0066,4.0066;" d="M154.14,982.613 c-3.813-30.31-14.313-168.433,101.571-221.427c125.069-57.194,146.836,37.178,93.431,60.287 c-43.259,18.719-154.555-96.759-25.101-182.535c129.453-85.777,307.354-110.586,295.396-297.435 C606.682,142.124,436.744,60.42,377.773,116.352c-58.973,55.932,16.617,138.213,70.225,54.836 c53.4-83.059-171.551-290.623-444.229-75.781"></path>
+					<path style="fill:none;stroke:#FFA4A4;stroke-width:2;stroke-miterlimit:10;" d="M2.191,96.654 c-0.522,0.415-1.044,0.83-1.567,1.247"></path>
+            </symbol>
         </defs>
     </svg>
+    <div class="bg">
+    	<svg class="icon-aircraft">
+            <use xlink:href="#icon-aircraft"></use>
+        </svg>
+    	<svg class="icon-orbit">
+            <use xlink:href="#icon-orbit"></use>
+        </svg>
+    </div>
+    <main>
+        <section id="page_1" class="active_page">
+        	<div class="content">
+	        	<h1>这是我写给你的祝福</h1>
+		        <p>你还记得，听到邮递员“有你的信件”的叫唤后，查阅信箱的期待么？</p>
+		        <p>你还记得，用那把小巧的裁纸刀，小心翼翼划开信封的专注么？</p>
+		        <p>在群发短信、微信轰炸、甚至连一条原创信息都变得不易的今天，您，是否怀念手写的祝福？</p>
+		        <p>『+1』联合心书，为你代写情书，手写祝福，在2016年为你送上第一份最原始最淳朴的新年祝福！</p>
+	        </div>
+	        <div class="btns">
+		        <a class="to_page_2 button">
+		        	<svg class="icon-to_page2">
+			            <use xlink:href="#icon-to_page2"></use>
+			        </svg>
+		        </a>
+	        </div>
+        	<img class="bgi" src="img/bottombgi.png">
+		</section>
+		<section id="page_2">
+			<div class="content">
+				<div class="zip_1">
+					<i class="code"></i>
+					<i class="code"></i>
+					<i class="code"></i>
+					<i class="code"></i>
+					<i class="code"></i>
+					<i class="code"></i>
+				</div>
+				<div class="stamp">
+					<svg class="icon-stamp">
+			            <use xlink:href="#icon-stamp"></use>
+			        </svg>
+				</div>
+				<div class="textarea">
+					<textarea rows="3" spellcheck="false" placeholder="在这里写下你的祝福" autocomplete="on"></textarea>
+				</div>
+				<div class="qrs">
+					<img src="img/2CCF8211.jpg" height="261" width="261">
+					<img src="img/2CCF8213.jpg" height="261" width="261">
+				</div>
+				<div class="zip_2">
+					<i class="code"></i>
+					<i class="code"></i>
+					<i class="code"></i>
+					<i class="code"></i>
+					<i class="code"></i>
+					<i class="code"></i>
+				</div>
+			</div>
+			<div class="btns">
+				<button class="send">完成</button>
+			</div>			
+		</section>
+		<section id="page_3">
+			<div class="content">
+				<h1>你已经完成了贺卡的寄送</h1>
+				<p>+1&amp;心书会将你的祝福，准确无误的送达到TA的手上</p>
+			</div>
+			<div class="btns">
+				<button class="go_xinshu">传递爱的祝福</button>
+				<button class="go_jiayi">进入+1</button>
+			</div>
+		</section>
+    </main>
+    <script src="index.js"></script>
 </body>
 
 </html>

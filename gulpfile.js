@@ -1,6 +1,7 @@
 const gulp = require('gulp');
+const fontSpider = require( 'gulp-font-spider' );
 const browserify = require('gulp-browserify');
-const minify_js = require('gulp-jsmin');
+const minify_js = require('gulp-uglify');
 const minify_css = require('gulp-minify-css');
 const minify_html = require('gulp-minify-html');
 const autoprefixer = require('gulp-autoprefixer');
@@ -24,26 +25,32 @@ gulp.task('style', () => {
 });
 
 gulp.task('watch', () => {
-   gulp.watch('src/*.*', ['script', 'style']);
+   gulp.watch('src/*.*', ['build']);
 });
 
 gulp.task('default', ['build', 'watch']);
 
 gulp.task('build', ['script', 'style'], () => {
-    gulp.src('src/**/*.+(png|jpg)')
+    gulp.src('src/**/*.+(png|jpg|ttf)')
     .pipe(gulp.dest('build'));
 
     gulp.src('src/**/*.html')
     .pipe(minify_html())
     .pipe(gulp.dest('build'));
 
-    gulp.src('src/**/*.css')
+    gulp.src('src/style.css')
     .pipe(minify_css())
     .pipe(gulp.dest('build'));
     
     gulp.src('src/index.js')
     .pipe(browserify())
     .pipe(minify_js())
+    .pipe(gulp.dest('build'));
+});
+
+gulp.task( 'fontspider', function(){
+    return gulp.src( 'build/index.html' )
+    .pipe( fontSpider() )
     .pipe(gulp.dest('build'));
 });
 
@@ -55,6 +62,7 @@ gulp.task('help', () => {
         watch: 发现源文件改动就进行build任务
         style: 编译less，并添加前缀和压缩
         script: 编译es6文件，并压缩
+        fontspider: 压缩中文字体
         `);
     console.log('\033[0m');
 })
