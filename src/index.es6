@@ -38,9 +38,23 @@ let $ = ele => {
 				}
 				return $(ele);
 			};
+		},
+		createPlaceholder(placeholder) {
+			if (ele instanceof HTMLElement && placeholder instanceof HTMLElement) {
+				let oldNode  = ele.textContent;
+				ele.addEventListener('focus', e => {
+					placeholder.style.display = 'none';
+				}, false);
+				ele.addEventListener('blur', e => {
+					let value = ele.value;
+					let node  = ele.textContent;
+					if (!value && oldNode === node) {
+						placeholder.style.display = 'block';
+					}
+				}, false);
+			}
 		}
 	}
-	method.__proto__ = ele;
 	return method;
 }
 
@@ -128,17 +142,7 @@ window.onload = e => {
 
 }
 
-TEXTS[1].querySelector('textarea').addEventListener('focus', e => {
-	let placeholder = DOC.querySelector('.placeholder');
-	placeholder.style.display = 'none';
-}, false);
-TEXTS[1].querySelector('textarea').addEventListener('blur', e => {
-	let text = TEXTS[1].querySelector('textarea').value;
-	let placeholder = DOC.querySelector('.placeholder');
-	if (!text) {
-		placeholder.style.display = 'block';
-	}
-}, false);
+$(TEXTS[1].querySelector('textarea')).createPlaceholder(TEXTS[1].querySelector('.placeholder'));
 
 SEND.addEventListener('click', e => {
 	let mailTo   = TEXTS[0].querySelector('input').value;

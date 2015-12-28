@@ -50,9 +50,25 @@ var $ = function $(ele) {
 				}
 				return $(ele);
 			};
+		},
+		createPlaceholder: function createPlaceholder(placeholder) {
+			if (ele instanceof HTMLElement && placeholder instanceof HTMLElement) {
+				(function () {
+					var oldNode = ele.textContent;
+					ele.addEventListener('focus', function (e) {
+						placeholder.style.display = 'none';
+					}, false);
+					ele.addEventListener('blur', function (e) {
+						var value = ele.value;
+						var node = ele.textContent;
+						if (!value && oldNode === node) {
+							placeholder.style.display = 'block';
+						}
+					}, false);
+				})();
+			}
 		}
 	};
-	method.__proto__ = ele;
 	return method;
 };
 
@@ -143,17 +159,7 @@ window.onload = function (e) {
 	}, parseInt(audio.duration * 1000 - 15000));
 };
 
-TEXTS[1].querySelector('textarea').addEventListener('focus', function (e) {
-	var placeholder = DOC.querySelector('.placeholder');
-	placeholder.style.display = 'none';
-}, false);
-TEXTS[1].querySelector('textarea').addEventListener('blur', function (e) {
-	var text = TEXTS[1].querySelector('textarea').value;
-	var placeholder = DOC.querySelector('.placeholder');
-	if (!text) {
-		placeholder.style.display = 'block';
-	}
-}, false);
+$(TEXTS[1].querySelector('textarea')).createPlaceholder(TEXTS[1].querySelector('.placeholder'));
 
 SEND.addEventListener('click', function (e) {
 	var mailTo = TEXTS[0].querySelector('input').value;
