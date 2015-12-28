@@ -9,7 +9,7 @@ const PAGE_1     = DOC.querySelector('#page_1');
 const PAGE_2     = DOC.querySelector('#page_2');
 const PAGE_3     = DOC.querySelector('#page_3');
 const TO_PAGE_2  = PAGE_1.querySelector('.to_page_2');
-const TEXT       = PAGE_2.querySelector('.textarea textarea');
+const TEXTS      = PAGE_2.querySelectorAll('.warp .row');
 const SEND       = PAGE_2.querySelector('.send');
 const QRS        = PAGE_2.querySelector('.qrs');
 const SHARE      = PAGE_3.querySelector('.share');
@@ -128,22 +128,38 @@ window.onload = e => {
 
 }
 
-TEXT.addEventListener('input', e => {
-	let rows = TEXT.value.split(/\r?\n/).length;
-	if (rows >= 3) {
-		TEXT.rows = rows;
+TEXTS[1].querySelector('textarea').addEventListener('focus', e => {
+	let placeholder = DOC.querySelector('.placeholder');
+	placeholder.style.display = 'none';
+}, false);
+TEXTS[1].querySelector('textarea').addEventListener('blur', e => {
+	let text = TEXTS[1].querySelector('textarea').value;
+	let placeholder = DOC.querySelector('.placeholder');
+	if (!text) {
+		placeholder.style.display = 'block';
 	}
 }, false);
 
 SEND.addEventListener('click', e => {
-	let text = DOC.querySelector('textarea').value;
-	if (!text) {
+	let mailTo   = TEXTS[0].querySelector('input').value;
+	let content  = TEXTS[1].querySelector('textarea').value;
+	let mailFrom = TEXTS[2].querySelector('input').value;
+	if (!mailTo) {
+		alert('请填写收件人信息')
+		return;
+	} if (!content) {
 		alert('请填写信件内容')
 		return;
+	} if (!mailFrom) {
+		if(!confirm('是否匿名发送？')){
+			return;
+		}
 	}
 	// AIRCRAFT js animation;
 	let body = {
-		content: text,
+		mailTo: mailTo,
+		content: content,
+		mailFrom: mailFrom
 	}
 	let option = {
 		url: '/temp/receive/', // http://jiayi.la/temp/receive/

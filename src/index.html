@@ -78,8 +78,19 @@
 			            <use xlink:href="#icon-stamp"></use>
 			        </svg>
 				</div>
-				<div class="textarea">
-					<textarea rows="3" spellcheck="false" placeholder="在这里写下你的祝福" autocomplete="on"></textarea>
+				<div class="warp">
+					<div class="row">
+					    <label for="to">To: </label>
+					    <input type="text" class="to" name="to" placeholder="收件人信息" />
+					</div>
+			    <div class="row">
+			    		<div class="placeholder">在这里写下你得祝福</div>
+			        <textarea rows="1" class="centent" spellcheck="false" autocomplete="on"></textarea>
+			    </div>
+					<div class="row">
+					    <label for="from">From: </label>
+					    <input type="text" class="from" name="from" placeholder="寄信人信息" />
+					</div>
 				</div>
 				<div class="qrs">
 					<img src="img/2CCF8211.jpg" class="qr" height="261" width="261">
@@ -96,7 +107,7 @@
 			</div>
 			<div class="btns">
 				<button class="send">完成</button>
-			</div>			
+			</div>
 		</section>
 		<section id="page_3">
 			<div class="content">

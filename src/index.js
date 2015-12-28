@@ -17,7 +17,7 @@ var PAGE_1 = DOC.querySelector('#page_1');
 var PAGE_2 = DOC.querySelector('#page_2');
 var PAGE_3 = DOC.querySelector('#page_3');
 var TO_PAGE_2 = PAGE_1.querySelector('.to_page_2');
-var TEXT = PAGE_2.querySelector('.textarea textarea');
+var TEXTS = PAGE_2.querySelectorAll('.warp .row');
 var SEND = PAGE_2.querySelector('.send');
 var QRS = PAGE_2.querySelector('.qrs');
 var SHARE = PAGE_3.querySelector('.share');
@@ -143,22 +143,38 @@ window.onload = function (e) {
 	}, parseInt(audio.duration * 1000 - 15000));
 };
 
-TEXT.addEventListener('input', function (e) {
-	var rows = TEXT.value.split(/\r?\n/).length;
-	if (rows >= 3) {
-		TEXT.rows = rows;
+TEXTS[1].querySelector('textarea').addEventListener('focus', function (e) {
+	var placeholder = DOC.querySelector('.placeholder');
+	placeholder.style.display = 'none';
+}, false);
+TEXTS[1].querySelector('textarea').addEventListener('blur', function (e) {
+	var text = TEXTS[1].querySelector('textarea').value;
+	var placeholder = DOC.querySelector('.placeholder');
+	if (!text) {
+		placeholder.style.display = 'block';
 	}
 }, false);
 
 SEND.addEventListener('click', function (e) {
-	var text = DOC.querySelector('textarea').value;
-	if (!text) {
+	var mailTo = TEXTS[0].querySelector('input').value;
+	var content = TEXTS[1].querySelector('textarea').value;
+	var mailFrom = TEXTS[2].querySelector('input').value;
+	if (!mailTo) {
+		alert('请填写收件人信息');
+		return;
+	}if (!content) {
 		alert('请填写信件内容');
 		return;
+	}if (!mailFrom) {
+		if (!confirm('是否匿名发送？')) {
+			return;
+		}
 	}
 	// AIRCRAFT js animation;
 	var body = {
-		content: text
+		mailTo: mailTo,
+		content: content,
+		mailFrom: mailFrom
 	};
 	var option = {
 		url: '/temp/receive/', // http://jiayi.la/temp/receive/

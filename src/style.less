@@ -10,7 +10,7 @@
 @mbb: #0070BE; // 信封边框蓝色
 
 :root{
-	font-size: 62.5%;
+	font-size: 75%;
 	@media (min-width: 480px) and (min-aspect-ratio: 4/3) {
 		font-size: 100%;
 	}
@@ -40,10 +40,26 @@ body{
 	}
 }
 a,
-button{
+button,
+input,
+label,
+textarea {
+	outline: none;
+	border: none;
+	background: transparent;
+	margin: 0;
+	padding: 0;
 	&::-moz-focus-inner{
 		border : none;
 	}
+	&:active,
+	&:focus {
+		outline: none;
+		border: none;
+	}
+}
+a,
+button{
 	cursor: pointer;
 }
 button{
@@ -74,7 +90,7 @@ button{
 		vertical-align: middle;
 		line-height: 1.5em;
 		margin-top: -5em;
-		max-height: 80%; 
+		max-height: 80%;
 		h1{
 			font-size: 1.6em;
 			text-align: center;
@@ -188,43 +204,68 @@ button{
 				height: 100%;
 				content: "";
 			}
-			&::after {
+		}
+		.warp {
+			@page_2_textarea_h: 9rem;
+			width: 100%;
+			height: @page_2_textarea_h;
+			position: relative;
+			// &::-webkit-scrollbar {
+			//     display: none;
+			// }
+			&::before {
 				display: block;
 				content: "";
 				clear: both;
 			}
-		}
-		.textarea{
-			@page_2_textarea_h: 9rem;
-			width: 100%;
-			height: @page_2_textarea_h;
-			overflow-x: hidden;
-			&::-webkit-scrollbar {
-			    display: none;
-			}
-			textarea {
-				display: block;
+			.row {
 				margin: 0;
-				overflow-y: hidden;
-				line-height: @page_2_textarea_h/3rem;
-				font-size: @page_2_textarea_h/6rem;
-				font-family: sans-serif;
-				color: @tc;
-				width: inherit;
-				border: none;
-				resize: none;
-				background-color: transparent;
-				background-image:repeating-linear-gradient(180deg, 
-					transparent 0%,
-					transparent calc(@page_2_textarea_h/3rem ~"-" 0.1rem),
-					rgba(0, 0, 0, .1) calc(@page_2_textarea_h/3rem ~"-" 0.1rem),
-					rgba(0, 0, 0, .1) @page_2_textarea_h/3rem
-				);
-				&:focus{
-					border: none;
-					outline: none;
+				padding: 0;
+				height: @page_2_textarea_h / 3;
+				line-height: @page_2_textarea_h / 3;
+				box-sizing: border-box;
+				border-bottom: 1px solid @mg;
+				position: relative;
+				label,
+				input {
+					font-size: @page_2_textarea_h / 9;
+					font-family: "qingSong", serif;
+					line-height: inherit;
+					height: 100%;
+					color: @tc;
 				}
-			}
+				label {
+					width: 3em;
+					display: inline-block;
+				}
+				input {
+					width: 100%;
+					height: 100%;
+					margin-left: -3em;
+					text-indent: 3em;
+					position: absolute;
+					right: 0px;
+					top: 0;
+				}
+				textarea {
+					width: 100%;
+					height: 100%;
+					resize: none;
+					line-height: inherit;
+					height: 100%;
+				}
+				.placeholder{
+					pointer-events: none;
+					font-family: "qingSong", serif;
+					color: @tc;
+					text-align: center;
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					top: 0;
+					left: 0;
+				}
+			} // row
 		}
 		.qrs{
 			height: 3em;
