@@ -12,6 +12,7 @@ var DOC = window.document;
 var BG = DOC.querySelector('div.bg');
 var AIRCRAFT = BG.querySelector('svg.icon-aircraft');
 var ORBIT = BG.querySelector('svg.icon-orbit');
+var THUMBNAILS = DOC.querySelector('img.thumbnails');
 var PAGE_1 = DOC.querySelector('#page_1');
 var PAGE_2 = DOC.querySelector('#page_2');
 var PAGE_3 = DOC.querySelector('#page_3');
@@ -19,11 +20,11 @@ var TO_PAGE_2 = PAGE_1.querySelector('.to_page_2');
 var TEXT = PAGE_2.querySelector('.textarea textarea');
 var SEND = PAGE_2.querySelector('.send');
 var QRS = PAGE_2.querySelector('.qrs');
-var GO_XINSHU = PAGE_3.querySelector('.go_xinshu');
+var SHARE = PAGE_3.querySelector('.share');
 var GO_JIAYI = PAGE_3.querySelector('.go_jiayi');
 
 var $ = function $(ele) {
-	return {
+	var method = {
 		classRemove: function classRemove() {
 			if (ele instanceof HTMLElement) {
 				var _ele$classList;
@@ -51,6 +52,8 @@ var $ = function $(ele) {
 			};
 		}
 	};
+	method.__proto__ = ele;
+	return method;
 };
 
 // background setting
@@ -104,7 +107,40 @@ TO_PAGE_2.addEventListener('click', function (e) {
 // TEXT.addEventListener('blur', e => SEND.style.display = 'block');
 window.onload = function (e) {
 	DOC.body.style.height = innerHeight + 'px';
+
+	BG.style.display = 'block';
 	bgSet();
+
+	// share to friend
+	THUMBNAILS.src = 'img/thumbnails.png';
+
+	// bg music
+	var audio = new Audio('stamp.mp3');
+	audio.loop = true;
+	audio.load();
+	audio.addEventListener('canplaythrough', function () {
+		return audio.play();
+	}, false);
+
+	//music volume coll
+	var timer_volume_up = setInterval(function () {
+		if (audio.volume < 0.15) {
+			audio.volume += 0.01;
+		} else {
+			audio.volume = 0.15;
+			clearInterval(timer_volume_up);
+		}
+	}, 1000);
+	var timer_count = setTimeout(function () {
+		var timer_volume_down = setInterval(function () {
+			if (audio.volume > 0.01) {
+				audio.volume -= 0.01;
+			} else {
+				audio.volume = 0.01;
+				clearInterval(timer_volume_down);
+			}
+		}, 1000);
+	}, parseInt(audio.duration * 1000 - 15000));
 };
 
 TEXT.addEventListener('input', function (e) {
@@ -121,9 +157,12 @@ SEND.addEventListener('click', function (e) {
 		return;
 	}
 	// AIRCRAFT js animation;
+	var body = {
+		content: text
+	};
 	var option = {
-		url: '/', // http://jiayi.la/temp/receive/
-		data: text
+		url: '/temp/receive/', // http://jiayi.la/temp/receive/
+		data: JSON.stringify(body)
 	};
 	_ajax2.default.post(option, function (req) {
 		toPage(PAGE_3);
@@ -152,7 +191,7 @@ QRS.addEventListener('click', function (e) {
 			div.addEventListener('click', function (e) {
 				div.parentElement.removeChild(div);
 			}, false);
-			div.classList.add('qr_view');
+			div.classList.add('pop_view');
 			$(img).setStyle({
 				width: width + 'px',
 				height: height + 'px',
@@ -177,11 +216,19 @@ QRS.addEventListener('click', function (e) {
 	};
 }, false);
 
-GO_XINSHU.addEventListener('click', function (e) {
-	_ajax2.default.get('/'); // 虽然跳转，但window对象并没有立刻卸载
-	location.href = '//www.baidu.com';
+SHARE.addEventListener('click', function (e) {
+	var div = DOC.createElement('div');
+	var img = DOC.createElement('img');
+	img.src = 'img/weixin.png';
+	div.classList.add('pop_view');
+	img.classList.add('share');
+	div.addEventListener('click', function (e) {
+		div.parentElement.removeChild(div);
+	}, false);
+	div.appendChild(img);
+	DOC.body.appendChild(div);
 }, false);
 GO_JIAYI.addEventListener('click', function (e) {
-	_ajax2.default.get('/');
-	location.href = '//www.baidu.com';
+	// Ajax.get('/');
+	location.href = '/redirect/appBao/';
 }, false);

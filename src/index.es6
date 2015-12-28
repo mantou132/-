@@ -1,21 +1,22 @@
 import Ajax from './ajax.js';
 
-const DOC       = window.document;
-const BG        = DOC.querySelector('div.bg');
-const AIRCRAFT  = BG.querySelector('svg.icon-aircraft');
-const ORBIT     = BG.querySelector('svg.icon-orbit');
-const PAGE_1    = DOC.querySelector('#page_1');
-const PAGE_2    = DOC.querySelector('#page_2');
-const PAGE_3    = DOC.querySelector('#page_3');
-const TO_PAGE_2 = PAGE_1.querySelector('.to_page_2');
-const TEXT      = PAGE_2.querySelector('.textarea textarea');
-const SEND      = PAGE_2.querySelector('.send');
-const QRS       = PAGE_2.querySelector('.qrs');
-const GO_XINSHU = PAGE_3.querySelector('.go_xinshu');
-const GO_JIAYI  = PAGE_3.querySelector('.go_jiayi');
+const DOC        = window.document;
+const BG         = DOC.querySelector('div.bg');
+const AIRCRAFT   = BG.querySelector('svg.icon-aircraft');
+const ORBIT      = BG.querySelector('svg.icon-orbit');
+const THUMBNAILS = DOC.querySelector('img.thumbnails');
+const PAGE_1     = DOC.querySelector('#page_1');
+const PAGE_2     = DOC.querySelector('#page_2');
+const PAGE_3     = DOC.querySelector('#page_3');
+const TO_PAGE_2  = PAGE_1.querySelector('.to_page_2');
+const TEXT       = PAGE_2.querySelector('.textarea textarea');
+const SEND       = PAGE_2.querySelector('.send');
+const QRS        = PAGE_2.querySelector('.qrs');
+const SHARE      = PAGE_3.querySelector('.share');
+const GO_JIAYI   = PAGE_3.querySelector('.go_jiayi');
 
 let $ = ele => {
-	return {
+	let method =  {
 		classRemove(...args) {
 			if (ele instanceof HTMLElement) {
 				ele.classList.remove(...args);
@@ -39,6 +40,8 @@ let $ = ele => {
 			};
 		}
 	}
+	method.__proto__ = ele;
+	return method;
 }
 
 // background setting
@@ -57,16 +60,16 @@ let bgSet = () => {
 	let aLeft   = left - aWidth/2;
 
 	let orbitStyle = {
-		width: `${width}px`,
-		height: `${height}px`,
-		top: `${top}px`,
-		left: `${left}px`,
+		width  : `${width}px`,
+		height : `${height}px`,
+		top    : `${top}px`,
+		left   : `${left}px`,
 	}
 	let aircraftStyle = {
-		width: `${aWidth}px`,
-		height: `${aHeight}px`,
-		top: `${aTop}px`,
-		left: `${aLeft}px`,
+		width  : `${aWidth}px`,
+		height : `${aHeight}px`,
+		top    : `${aTop}px`,
+		left   : `${aLeft}px`,
 	}
 	$(ORBIT).setStyle(orbitStyle);
 	$(AIRCRAFT).setStyle(aircraftStyle);
@@ -89,7 +92,40 @@ TO_PAGE_2.addEventListener('click', e => {
 // TEXT.addEventListener('blur', e => SEND.style.display = 'block');
 window.onload = e => {
 	DOC.body.style.height = innerHeight + 'px';
+
+	BG.style.display = 'block';
 	bgSet();
+
+	// share to friend
+	THUMBNAILS.src = 'img/thumbnails.png';
+
+	// bg music
+	let audio = new Audio('stamp.mp3');
+	audio.loop = true;
+	audio.load();
+	audio.addEventListener('canplaythrough', () => audio.play(), false);
+
+	//music volume coll
+	let timer_volume_up = setInterval(function(){
+		if (audio.volume < 0.15) {
+		    audio.volume += 0.01;
+		} else {
+		    audio.volume = 0.15;
+		    clearInterval(timer_volume_up);
+		}
+	},1000);
+	let timer_count = setTimeout(function() {
+	    let timer_volume_down = setInterval(function() {
+	        if (audio.volume > 0.01) {
+	            audio.volume -= 0.01;
+	        } else {
+	            audio.volume = 0.01;
+	            clearInterval(timer_volume_down);
+	        }
+
+	    }, 1000);
+	}, parseInt(audio.duration * 1000 - 15000));
+
 }
 
 TEXT.addEventListener('input', e => {
@@ -106,9 +142,12 @@ SEND.addEventListener('click', e => {
 		return;
 	}
 	// AIRCRAFT js animation;
+	let body = {
+		content: text,
+	}
 	let option = {
-		url: '/', // http://jiayi.la/temp/receive/
-		data: text,
+		url: '/temp/receive/', // http://jiayi.la/temp/receive/
+		data: JSON.stringify(body),
 	}
 	Ajax.post(option, req => {
 		toPage(PAGE_3);
@@ -126,7 +165,7 @@ QRS.addEventListener('click', e => {
 		div.addEventListener('click', e => {
 			div.parentElement.removeChild(div);
 		}, false);
-		div.classList.add('qr_view');
+		div.classList.add('pop_view');
 		$(img).setStyle({
 			width  : width + 'px',
 			height : height + 'px',
@@ -150,11 +189,20 @@ QRS.addEventListener('click', e => {
 	};
 } , false);
 
-GO_XINSHU.addEventListener('click', e => {
-	Ajax.get('/');// 虽然跳转，但window对象并没有立刻卸载
-	location.href = '//www.baidu.com';
+SHARE.addEventListener('click', e => {
+	let div = DOC.createElement('div');
+	let img = DOC.createElement('img');
+	img.src = 'img/weixin.png';
+	div.classList.add('pop_view');
+	img.classList.add('share');
+	div.addEventListener('click', e => {
+		div.parentElement.removeChild(div);
+	}, false);
+	div.appendChild(img);
+	DOC.body.appendChild(div);
+
 }, false);
 GO_JIAYI.addEventListener('click', e => {
-	Ajax.get('/');
-	location.href = '//www.baidu.com';
+	// Ajax.get('/');
+	location.href = '/redirect/appBao/';
 }, false);

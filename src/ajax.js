@@ -15,6 +15,7 @@ var Ajax = {
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = this.done(xhr, callback);
 		xhr.open("post", option.url, true);
+		xhr.setRequestHeader('Content-Type', 'application/json');
 		xhr.send(option.data);
 	},
 	done: function done(xhr, callback) {

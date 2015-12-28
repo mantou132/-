@@ -50,12 +50,12 @@ section {
 :root {
   font-size: 62.5%;
 }
-@media (min-width: 480px) and (max-aspect-ratio: 16/9) {
+@media (min-width: 480px) and (min-aspect-ratio: 4/3) {
   :root {
     font-size: 100%;
   }
 }
-@media (min-width: 640px) and (max-aspect-ratio: 16/9) {
+@media (min-width: 640px) and (min-aspect-ratio: 4/3) {
   :root {
     font-size: 120%;
   }
@@ -75,6 +75,7 @@ html {
 }
 .bg {
   position: absolute;
+  display: none;
 }
 .bg svg {
   position: inherit;
@@ -245,7 +246,6 @@ button:active {
   width: 100%;
   height: 9rem;
   overflow-x: hidden;
-  overflow-y: scroll;
 }
 #page_2 .content .textarea::-webkit-scrollbar {
   display: none;
@@ -281,18 +281,35 @@ button:active {
   width: auto;
   margin-right: .2em;
 }
-.qr_view {
+.pop_view {
   position: absolute;
   width: 100%;
   height: 100%;
   left: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.8);
 }
-.qr_view img {
+.pop_view img.qr {
   position: absolute;
   -webkit-transition: all .5s;
   transition: all .5s;
+}
+.pop_view img.share {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+@media (min-aspect-ratio: 1/1) {
+  .pop_view img.share {
+    height: 80%;
+    width: auto;
+  }
+}
+@media (max-aspect-ratio: 1/1) {
+  .pop_view img.share {
+    width: 80%;
+    height: auto;
+  }
 }
 #page_3 .content {
   margin-top: -10em;

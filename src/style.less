@@ -11,10 +11,10 @@
 
 :root{
 	font-size: 62.5%;
-	@media (min-width: 480px) and (max-aspect-ratio: 16/9) {
+	@media (min-width: 480px) and (min-aspect-ratio: 4/3) {
 		font-size: 100%;
 	}
-	@media (min-width: 640px) and (max-aspect-ratio: 16/9) {
+	@media (min-width: 640px) and (min-aspect-ratio: 4/3) {
 		font-size: 120%;
 	}
 }
@@ -33,6 +33,7 @@ body{
 }
 .bg {
 	position: absolute;
+	display: none;
 	svg {
 		position: inherit;
 		z-index: -1;
@@ -198,11 +199,10 @@ button{
 			width: 100%;
 			height: @page_2_textarea_h;
 			overflow-x: hidden;
-			overflow-y: scroll;
 			&::-webkit-scrollbar {
 			    display: none;
 			}
-			textarea{
+			textarea {
 				display: block;
 				margin: 0;
 				overflow-y: hidden;
@@ -240,16 +240,29 @@ button{
 		}
 	} // content
 }
-.qr_view{
+.pop_view {
 	position: absolute;
 	width: 100%;
 	height: 100%;
 	left: 0;
 	top: 0;
-	background: rgba(0, 0, 0, 0.9);
-	img{
+	background: rgba(0, 0, 0, 0.8);
+	img.qr{
 		position: absolute;
 		transition:  all .5s;
+	}
+	img.share {
+		position: absolute;
+		top: 0;
+		right: 0;
+		@media (min-aspect-ratio: 1/1) {
+			height: 80%;
+			width: auto;
+		}
+		@media (max-aspect-ratio: 1/1) {
+			width: 80%;
+			height: auto;
+		}
 	}
 }
 #page_3{
