@@ -4,6 +4,10 @@ var _ajax = require('./ajax.js');
 
 var _ajax2 = _interopRequireDefault(_ajax);
 
+var _swipeEvent = require('./swipeEvent.js');
+
+var _swipeEvent2 = _interopRequireDefault(_swipeEvent);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
@@ -13,15 +17,13 @@ var BG = DOC.querySelector('div.bg');
 var AIRCRAFT = BG.querySelector('svg.icon-aircraft');
 var ORBIT = BG.querySelector('svg.icon-orbit');
 var THUMBNAILS = DOC.querySelector('img.thumbnails');
-var PAGE_1 = DOC.querySelector('#page_1');
-var PAGE_2 = DOC.querySelector('#page_2');
-var PAGE_3 = DOC.querySelector('#page_3');
-var TO_PAGE_2 = PAGE_1.querySelector('.to_page_2');
-var TEXTS = PAGE_2.querySelectorAll('.warp .row');
-var SEND = PAGE_2.querySelector('.send');
-var QRS = PAGE_2.querySelector('.qrs');
-var SHARE = PAGE_3.querySelector('.share');
-var GO_JIAYI = PAGE_3.querySelector('.go_jiayi');
+var PAGES = [DOC.querySelector('#page_1'), DOC.querySelector('#page_2'), DOC.querySelector('#page_3')];
+var TO_PAGE_2 = PAGES[0].querySelector('.to_page_2');
+var TEXTS = PAGES[1].querySelectorAll('.warp .row');
+var SEND = PAGES[1].querySelector('.send');
+var QRS = PAGES[1].querySelector('.qrs');
+var SHARE = PAGES[2].querySelector('.share');
+var GO_JIAYI = PAGES[2].querySelector('.go_jiayi');
 
 var $ = function $(ele) {
 	var method = {
@@ -108,14 +110,40 @@ var bgSet = function bgSet() {
 
 var toPage = function toPage(page) {
 	var current_page = DOC.querySelector('.active_page');
+	var currentPageIndex = Number(PAGES.indexOf(current_page));
+	var newPageIndex = Number(PAGES.indexOf(page));
+
+	if (page == 'next' || page == 'back') {
+		if (page == 'next' && currentPageIndex < PAGES.length - 1) {
+			toPage(PAGES[currentPageIndex + 1]);
+		}if (page == 'back' && currentPageIndex > 0) {
+			toPage(PAGES[currentPageIndex - 1]);
+		}
+		return;
+	};
+
+	if (currentPageIndex > newPageIndex) {
+		$(current_page).classAdd('back');
+		$(page).classAdd('back');
+	} else {
+		$(current_page).classRemove('back');
+		$(page).classRemove('back');
+	}
 
 	$(current_page).classRemove('active_page').classAdd('old_page');
 	$(page).classRemove('old_page').classAdd('active_page');
 };
 
+// touch listener
+_swipeEvent2.default.apply(undefined, PAGES).toTop(function () {
+	toPage('next');
+}).toBottom(function () {
+	toPage('back');
+}).toTopCancel(PAGES[1]);
+
 TO_PAGE_2.addEventListener('click', function (e) {
 	e.preventDefault();
-	toPage(PAGE_2);
+	toPage(PAGES[1]);
 }, false);
 
 // 防止手机键盘出现后改变页面元素布局
@@ -183,11 +211,11 @@ SEND.addEventListener('click', function (e) {
 		mailFrom: mailFrom
 	};
 	var option = {
-		url: '/temp/receive/', // http://jiayi.la/temp/receive/
+		url: '/', // http://jiayi.la/temp/receive/
 		data: JSON.stringify(body)
 	};
 	_ajax2.default.post(option, function (req) {
-		toPage(PAGE_3);
+		toPage(PAGES[0]);
 	});
 }, false);
 

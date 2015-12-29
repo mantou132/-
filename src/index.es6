@@ -1,19 +1,18 @@
 import Ajax from './ajax.js';
+import SwipeEvent from './swipeEvent.js';
 
 const DOC        = window.document;
 const BG         = DOC.querySelector('div.bg');
 const AIRCRAFT   = BG.querySelector('svg.icon-aircraft');
 const ORBIT      = BG.querySelector('svg.icon-orbit');
 const THUMBNAILS = DOC.querySelector('img.thumbnails');
-const PAGE_1     = DOC.querySelector('#page_1');
-const PAGE_2     = DOC.querySelector('#page_2');
-const PAGE_3     = DOC.querySelector('#page_3');
-const TO_PAGE_2  = PAGE_1.querySelector('.to_page_2');
-const TEXTS      = PAGE_2.querySelectorAll('.warp .row');
-const SEND       = PAGE_2.querySelector('.send');
-const QRS        = PAGE_2.querySelector('.qrs');
-const SHARE      = PAGE_3.querySelector('.share');
-const GO_JIAYI   = PAGE_3.querySelector('.go_jiayi');
+const PAGES      = [DOC.querySelector('#page_1'), DOC.querySelector('#page_2'), DOC.querySelector('#page_3')];
+const TO_PAGE_2  = PAGES[0].querySelector('.to_page_2');
+const TEXTS      = PAGES[1].querySelectorAll('.warp .row');
+const SEND       = PAGES[1].querySelector('.send');
+const QRS        = PAGES[1].querySelector('.qrs');
+const SHARE      = PAGES[2].querySelector('.share');
+const GO_JIAYI   = PAGES[2].querySelector('.go_jiayi');
 
 let $ = ele => {
 	let method =  {
@@ -90,15 +89,44 @@ let bgSet = () => {
 }
 
 let toPage = page => {
-	let current_page = DOC.querySelector('.active_page');
+	let current_page     = DOC.querySelector('.active_page');
+	let currentPageIndex = Number(PAGES.indexOf(current_page));
+	let newPageIndex     = Number(PAGES.indexOf(page));
+
+	if (page == 'next' || page == 'back') {
+		if (page == 'next' && currentPageIndex < PAGES.length - 1 ) {
+			toPage(PAGES[currentPageIndex + 1]);
+		} if (page == 'back' && currentPageIndex > 0 ){
+			toPage(PAGES[currentPageIndex - 1]);
+		}
+		return;
+	};
+
+	if (currentPageIndex > newPageIndex) {
+		$(current_page).classAdd('back');
+		$(page).classAdd('back');
+	} else {
+		$(current_page).classRemove('back');
+		$(page).classRemove('back');
+	}
 
 	$(current_page).classRemove('active_page').classAdd('old_page');
 	$(page).classRemove('old_page').classAdd('active_page');
 }
 
+// touch listener
+SwipeEvent(...PAGES)
+	.toTop(() => {
+		toPage('next');
+	})
+	.toBottom(() => {
+		toPage('back');
+	})
+	.toTopCancel(PAGES[1]);
+
 TO_PAGE_2.addEventListener('click', e => {
 	e.preventDefault();
-	toPage(PAGE_2);
+	toPage(PAGES[1]);
 } , false);
 
 // 防止手机键盘出现后改变页面元素布局
@@ -166,11 +194,11 @@ SEND.addEventListener('click', e => {
 		mailFrom: mailFrom
 	}
 	let option = {
-		url: '/temp/receive/', // http://jiayi.la/temp/receive/
+		url: '/', // http://jiayi.la/temp/receive/
 		data: JSON.stringify(body),
 	}
 	Ajax.post(option, req => {
-		toPage(PAGE_3);
+		toPage(PAGES[0]);
 	});
 }, false);
 
