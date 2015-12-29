@@ -9,6 +9,10 @@ const babel        = require('gulp-babel');
 const less         = require('gulp-less');
 const path         = require('path');
 
+//问题： 解析文件放另一个文件夹
+// 压缩和合并后创建source map
+// 扩展
+
 gulp.task('script', () => {
     return gulp.src('src/*.es6')
     .pipe(babel({
@@ -57,7 +61,7 @@ gulp.task( 'fontspider', function(){
 });
 
 gulp.task('help', () => {
-    console.log('\033[31;m');
+    console.log('\033[31m');
     console.log(`
         build      : 将所以编译后的文件移动到build目录
         default    : 在build的基础上再加监视文件任务
