@@ -11,9 +11,15 @@ section {
   -webkit-animation: in 0.5s ease-in 0s 1 normal none;
           animation: in 0.5s ease-in 0s 1 normal none;
 }
-.back {
-  -webkit-animation-direction: reverse;
-          animation-direction: reverse;
+.back_old_page {
+  right: 100%;
+  -webkit-animation: back_out 0.5s ease-out 0s 1 normal none;
+          animation: back_out 0.5s ease-out 0s 1 normal none;
+}
+.back_active_page {
+  right: 0;
+  -webkit-animation: back_in 0.5s ease-in 0s 1 normal none;
+          animation: back_in 0.5s ease-in 0s 1 normal none;
 }
 @-webkit-keyframes in {
   0% {
@@ -48,6 +54,42 @@ section {
   }
   100% {
     top: -100%;
+    right: 0%;
+  }
+}
+@-webkit-keyframes back_in {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 0;
+  }
+}
+@keyframes back_in {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 0;
+  }
+}
+@-webkit-keyframes back_out {
+  0% {
+    top: 0;
+    right: 0%;
+  }
+  100% {
+    top: 100%;
+    right: 0%;
+  }
+}
+@keyframes back_out {
+  0% {
+    top: 0;
+    right: 0%;
+  }
+  100% {
+    top: 100%;
     right: 0%;
   }
 }

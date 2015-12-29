@@ -7,6 +7,7 @@ const AIRCRAFT   = BG.querySelector('svg.icon-aircraft');
 const ORBIT      = BG.querySelector('svg.icon-orbit');
 const THUMBNAILS = DOC.querySelector('img.thumbnails');
 const PAGES      = [DOC.querySelector('#page_1'), DOC.querySelector('#page_2'), DOC.querySelector('#page_3')];
+const TO_PAGE_1  = PAGES[1].querySelector('.to_page_1');
 const TO_PAGE_2  = PAGES[0].querySelector('.to_page_2');
 const TEXTS      = PAGES[1].querySelectorAll('.warp .row');
 const SEND       = PAGES[1].querySelector('.send');
@@ -40,6 +41,9 @@ let $ = ele => {
 		},
 		createPlaceholder(placeholder) {
 			if (ele instanceof HTMLElement && placeholder instanceof HTMLElement) {
+				if (ele.value) {
+					placeholder.style.display = 'none';
+				}
 				let oldNode  = ele.textContent;
 				ele.addEventListener('focus', e => {
 					placeholder.style.display = 'none';
@@ -51,6 +55,8 @@ let $ = ele => {
 						placeholder.style.display = 'block';
 					}
 				}, false);
+			} else {
+				throw 'This not HTMLElement'
 			}
 		}
 	}
@@ -89,7 +95,7 @@ let bgSet = () => {
 }
 
 let toPage = page => {
-	let current_page     = DOC.querySelector('.active_page');
+	let current_page     = DOC.querySelector('[class*=active_page]');
 	let currentPageIndex = Number(PAGES.indexOf(current_page));
 	let newPageIndex     = Number(PAGES.indexOf(page));
 
@@ -103,15 +109,16 @@ let toPage = page => {
 	};
 
 	if (currentPageIndex > newPageIndex) {
-		$(current_page).classAdd('back');
-		$(page).classAdd('back');
+		$(current_page).classRemove('active_page').classRemove('old_page');
+		$(page).classRemove('active_page').classRemove('old_page');
+		$(current_page).classRemove('back_active_page').classAdd('back_old_page');
+		$(page).classRemove('back_old_page').classAdd('back_active_page');
 	} else {
-		$(current_page).classRemove('back');
-		$(page).classRemove('back');
+		$(current_page).classRemove('back_active_page').classRemove('back_old_page');
+		$(page).classRemove('back_active_page').classRemove('back_old_page');
+		$(current_page).classRemove('active_page').classAdd('old_page');
+		$(page).classRemove('old_page').classAdd('active_page');
 	}
-
-	$(current_page).classRemove('active_page').classAdd('old_page');
-	$(page).classRemove('old_page').classAdd('active_page');
 }
 
 // touch listener
@@ -127,6 +134,11 @@ SwipeEvent(...PAGES)
 TO_PAGE_2.addEventListener('click', e => {
 	e.preventDefault();
 	toPage(PAGES[1]);
+} , false);
+
+TO_PAGE_1.addEventListener('click', e => {
+	e.preventDefault();
+	toPage(PAGES[0]);
 } , false);
 
 // 防止手机键盘出现后改变页面元素布局
@@ -170,7 +182,9 @@ window.onload = e => {
 
 }
 
+$(TEXTS[0].querySelector('input')).createPlaceholder(TEXTS[0].querySelector('.placeholder'));
 $(TEXTS[1].querySelector('textarea')).createPlaceholder(TEXTS[1].querySelector('.placeholder'));
+$(TEXTS[2].querySelector('input')).createPlaceholder(TEXTS[2].querySelector('.placeholder'));
 
 SEND.addEventListener('click', e => {
 	let mailTo   = TEXTS[0].querySelector('input').value;
@@ -198,7 +212,7 @@ SEND.addEventListener('click', e => {
 		data: JSON.stringify(body),
 	}
 	Ajax.post(option, req => {
-		toPage(PAGES[0]);
+		toPage(PAGES[2]);
 	});
 }, false);
 

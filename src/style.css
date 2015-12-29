@@ -11,9 +11,15 @@ section {
   -webkit-animation: in 0.5s ease-in 0s 1 normal none;
           animation: in 0.5s ease-in 0s 1 normal none;
 }
-.back {
-  -webkit-animation-direction: reverse;
-          animation-direction: reverse;
+.back_old_page {
+  right: 100%;
+  -webkit-animation: back_out 0.5s ease-out 0s 1 normal none;
+          animation: back_out 0.5s ease-out 0s 1 normal none;
+}
+.back_active_page {
+  right: 0;
+  -webkit-animation: back_in 0.5s ease-in 0s 1 normal none;
+          animation: back_in 0.5s ease-in 0s 1 normal none;
 }
 @-webkit-keyframes in {
   0% {
@@ -48,6 +54,42 @@ section {
   }
   100% {
     top: -100%;
+    right: 0%;
+  }
+}
+@-webkit-keyframes back_in {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 0;
+  }
+}
+@keyframes back_in {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 0;
+  }
+}
+@-webkit-keyframes back_out {
+  0% {
+    top: 0;
+    right: 0%;
+  }
+  100% {
+    top: 100%;
+    right: 0%;
+  }
+}
+@keyframes back_out {
+  0% {
+    top: 0;
+    right: 0%;
+  }
+  100% {
+    top: 100%;
     right: 0%;
   }
 }
@@ -190,6 +232,14 @@ button:active {
   display: block;
   margin: auto;
 }
+#page_1 .btns .button svg,
+#page_2 .btns .button svg,
+#page_3 .btns .button svg,
+#page_1 .btns button svg,
+#page_2 .btns button svg,
+#page_3 .btns button svg {
+  height: 3em;
+}
 #page_1 .btns .button + .button,
 #page_2 .btns .button + .button,
 #page_3 .btns .button + .button,
@@ -210,15 +260,19 @@ button:active {
   height: 23em;
   text-shadow: 0px 0px 3px #ffc5c5;
 }
-#page_1 .button svg.icon-to_page2 {
-  height: 3em;
-}
 #page_1 .bgi {
   position: absolute;
   z-index: -1;
   bottom: 0;
   left: 0;
   width: 100%;
+}
+#page_2 .btns:nth-child(1) {
+  top: 3em;
+  opacity: 0.5;
+  bottom: auto;
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
 }
 #page_2 .content {
   position: relative;
@@ -290,7 +344,6 @@ button:active {
 #page_2 .content .warp .row label,
 #page_2 .content .warp .row input {
   font-size: 1rem;
-  font-family: "qingSong", serif;
   line-height: inherit;
   height: 100%;
   color: #848484;
@@ -314,16 +367,20 @@ button:active {
   line-height: inherit;
   height: 100%;
 }
-#page_2 .content .warp .row .placeholder {
+#page_2 .content .warp .row:nth-child(2) .placeholder {
+  text-indent: 0em;
+  text-align: center;
+}
+#page_2 .content .placeholder {
   pointer-events: none;
   font-family: "qingSong", serif;
   color: #848484;
-  text-align: center;
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
+  text-indent: 3em;
 }
 #page_2 .content .qrs {
   height: 3em;

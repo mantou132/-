@@ -18,6 +18,7 @@ var AIRCRAFT = BG.querySelector('svg.icon-aircraft');
 var ORBIT = BG.querySelector('svg.icon-orbit');
 var THUMBNAILS = DOC.querySelector('img.thumbnails');
 var PAGES = [DOC.querySelector('#page_1'), DOC.querySelector('#page_2'), DOC.querySelector('#page_3')];
+var TO_PAGE_1 = PAGES[1].querySelector('.to_page_1');
 var TO_PAGE_2 = PAGES[0].querySelector('.to_page_2');
 var TEXTS = PAGES[1].querySelectorAll('.warp .row');
 var SEND = PAGES[1].querySelector('.send');
@@ -56,6 +57,9 @@ var $ = function $(ele) {
 		createPlaceholder: function createPlaceholder(placeholder) {
 			if (ele instanceof HTMLElement && placeholder instanceof HTMLElement) {
 				(function () {
+					if (ele.value) {
+						placeholder.style.display = 'none';
+					}
 					var oldNode = ele.textContent;
 					ele.addEventListener('focus', function (e) {
 						placeholder.style.display = 'none';
@@ -68,6 +72,8 @@ var $ = function $(ele) {
 						}
 					}, false);
 				})();
+			} else {
+				throw 'This not HTMLElement';
 			}
 		}
 	};
@@ -109,7 +115,7 @@ var bgSet = function bgSet() {
 };
 
 var toPage = function toPage(page) {
-	var current_page = DOC.querySelector('.active_page');
+	var current_page = DOC.querySelector('[class*=active_page]');
 	var currentPageIndex = Number(PAGES.indexOf(current_page));
 	var newPageIndex = Number(PAGES.indexOf(page));
 
@@ -123,15 +129,16 @@ var toPage = function toPage(page) {
 	};
 
 	if (currentPageIndex > newPageIndex) {
-		$(current_page).classAdd('back');
-		$(page).classAdd('back');
+		$(current_page).classRemove('active_page').classRemove('old_page');
+		$(page).classRemove('active_page').classRemove('old_page');
+		$(current_page).classRemove('back_active_page').classAdd('back_old_page');
+		$(page).classRemove('back_old_page').classAdd('back_active_page');
 	} else {
-		$(current_page).classRemove('back');
-		$(page).classRemove('back');
+		$(current_page).classRemove('back_active_page').classRemove('back_old_page');
+		$(page).classRemove('back_active_page').classRemove('back_old_page');
+		$(current_page).classRemove('active_page').classAdd('old_page');
+		$(page).classRemove('old_page').classAdd('active_page');
 	}
-
-	$(current_page).classRemove('active_page').classAdd('old_page');
-	$(page).classRemove('old_page').classAdd('active_page');
 };
 
 // touch listener
@@ -144,6 +151,11 @@ _swipeEvent2.default.apply(undefined, PAGES).toTop(function () {
 TO_PAGE_2.addEventListener('click', function (e) {
 	e.preventDefault();
 	toPage(PAGES[1]);
+}, false);
+
+TO_PAGE_1.addEventListener('click', function (e) {
+	e.preventDefault();
+	toPage(PAGES[0]);
 }, false);
 
 // 防止手机键盘出现后改变页面元素布局
@@ -187,7 +199,9 @@ window.onload = function (e) {
 	}, parseInt(audio.duration * 1000 - 15000));
 };
 
+$(TEXTS[0].querySelector('input')).createPlaceholder(TEXTS[0].querySelector('.placeholder'));
 $(TEXTS[1].querySelector('textarea')).createPlaceholder(TEXTS[1].querySelector('.placeholder'));
+$(TEXTS[2].querySelector('input')).createPlaceholder(TEXTS[2].querySelector('.placeholder'));
 
 SEND.addEventListener('click', function (e) {
 	var mailTo = TEXTS[0].querySelector('input').value;
@@ -215,7 +229,7 @@ SEND.addEventListener('click', function (e) {
 		data: JSON.stringify(body)
 	};
 	_ajax2.default.post(option, function (req) {
-		toPage(PAGES[0]);
+		toPage(PAGES[2]);
 	});
 }, false);
 

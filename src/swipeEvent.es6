@@ -11,12 +11,12 @@ let util = (ele) => {
 	let emptyFunction = () => {};
 
 	ele.addEventListener("touchstart", function(e) {
-	    e.preventDefault();
+	    //e.preventDefault();
 	    startX = e.changedTouches[0].pageX,
 	    startY = e.changedTouches[0].pageY;
 	});
 	ele.addEventListener("touchend", function(e) {
-	    e.preventDefault();
+	    //e.preventDefault();
 		let index = sourceArguments.indexOf(ele);
 	    moveEndX = e.changedTouches[0].pageX,
 	    moveEndY = e.changedTouches[0].pageY,
@@ -73,7 +73,6 @@ let swipeEvent = (...arg) => {
 
 	let cancelListener = (h, e) => {
 		let index = sourceArguments.indexOf(e);
-		console.log(handler);
 		if(index >= 0) {
 			h[index] = false;
 		}
